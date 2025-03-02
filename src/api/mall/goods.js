@@ -10,6 +10,15 @@ export function listGoods(query, pageReq) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/mall/umsGoods/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询商品信息详细
 export function getGoods(id) {
   return request({

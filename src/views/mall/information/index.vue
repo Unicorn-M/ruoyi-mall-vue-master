@@ -4,7 +4,7 @@
             <!-- 搜索区域 -->
             <div class="search-bar">
                 <el-input v-model="queryParams.keyword" placeholder="请输入关键字查询" clearable style="width: 300px;" />
-                <el-button type="primary" @click="handleQuery">查询</el-button>
+                <el-button type="primary" @click="getUmsInfomationByPage">查询</el-button>
                 <el-button @click="resetQuery">重置</el-button>
             </div>
 
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { listUmsInfomation, getUmsInfomation, addUmsInfomation, updateUmsInfomation, delUmsInfomation } from '@/api/mall/information';
+import { listUmsInfomation, getUmsInfomation, addUmsInfomation, updateUmsInfomation, delUmsInfomation, getUmsInformationByPage } from '@/api/mall/information';
 // import { QuillEditor } from 'vue-quill-editor';
 // import 'quill/dist/quill.core.css';
 // import 'quill/dist/quill.bubble.css';
@@ -109,7 +109,7 @@ export default {
             isContentDialogVisible: false, // 新的对话框可见性变量
             currentContent: '', // 新的内容变量
             queryParams: {
-                keyword: '',
+                keyWord: '',
                 pageNum: 1,
                 pageSize: 10,
             },
@@ -129,12 +129,15 @@ export default {
         };
     },
     methods: {
+        async getUmsInfomationByPage()  {
+            const res = await getUmsInformationByPage(this.queryParams)
+            this.dataList = res
+        },
         showContentDialog(row) {
             this.currentContent = row.content; // 假设内容在 row.content 中
             this.isContentDialogVisible = true;
         },
         handleQuery() {
-            this.queryParams.pageNum = 1;
             this.fetchData();
         },
         resetQuery() {
@@ -143,6 +146,7 @@ export default {
         },
         fetchData() {
             const { keyword, pageNum, pageSize } = this.queryParams;
+            console.log("keyword", keyword)
             listUmsInfomation({ keyword }, { page: pageNum - 1, size: pageSize }).then(response => {
                 this.dataList = response.content;
                 this.total = response.totalElements;

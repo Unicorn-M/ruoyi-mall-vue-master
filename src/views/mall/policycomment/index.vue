@@ -3,8 +3,8 @@
     <el-card>
       <!-- 搜索区域 -->
       <div class="search-bar">
-        <el-input v-model="queryParams.title" placeholder="请输入评论用户查询" clearable style="width: 300px;" />
-        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-input v-model="queryParams.keyword" placeholder="请输入评论用户查询" clearable style="width: 300px;" />
+        <el-button type="primary" @click="getUmsInformationByPage">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
       </div>
 
@@ -107,18 +107,15 @@
 </template>
 
 <script>
-import { listUmsPolicycomment, getUmsPolicycomment, delUmsPolicycomment, addUmsPolicycomment, updateUmsPolicycomment, exportUmsPolicycomment } from "@/api/mall/policycomment";
+import {getUmsInformationByPage, listUmsPolicycomment, getUmsPolicycomment, delUmsPolicycomment, addUmsPolicycomment, updateUmsPolicycomment, exportUmsPolicycomment } from "@/api/mall/policycomment";
 
 export default {
   data() {
     return {
       queryParams: {
+        keyword: '',
         pageNum: 1,
         pageSize: 10,
-        title: null,
-        content: null,
-        createtime: null,
-        create: null,
       },
       UmsNoticeList: [],
       total: 0,
@@ -133,6 +130,10 @@ export default {
     };
   },
   methods: {
+    async getUmsInformationByPage() {
+      const res = await getUmsInformationByPage(this.queryParams)
+      this.UmsNoticeList = res
+    },
     getList() {
       const { pageNum, pageSize } = this.queryParams;
       const query = { ...this.queryParams, pageNum: undefined, pageSize: undefined };

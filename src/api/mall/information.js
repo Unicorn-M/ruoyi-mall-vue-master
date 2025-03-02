@@ -10,6 +10,17 @@ export function listUmsInfomation(query, pageReq) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsInfomation/list',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
 // 查询资讯信息
 export function getUmsInfomation(id) {
   return request({

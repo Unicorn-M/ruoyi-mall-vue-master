@@ -10,6 +10,16 @@ export function listUmsOrder(query, pageReq) {
   })
 }
 
+
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/mall/umsOrder/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询订单详细
 export function getUmsOrder(id) {
   return request({

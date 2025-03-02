@@ -4,7 +4,7 @@
       <!-- 搜索区域 -->
       <div class="search-bar">
         <el-input v-model="queryParams.keyword" placeholder="请输入关键字查询" clearable style="width: 300px;" />
-        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-button type="primary" @click="getUmsInformationByPage">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
       </div>
 
@@ -22,7 +22,7 @@
         <el-table-column prop="id" label="序号" width="80" />
         <el-table-column label="图片" width="100">
           <template #default="scope">
-            <img :src="`${baseUrl}${scope.row.pic}`" alt="图片" style="width: 50px; height: 50px;" />
+            <img :src="`${scope.row.pic}`" alt="图片" style="width: 50px; height: 50px;" />
           </template>
         </el-table-column>
         <el-table-column prop="title" label="农家乐标题" />
@@ -50,7 +50,7 @@
       <!-- 查看内容对话框 -->
       <el-dialog title="查看内容" :visible.sync="isContentDialogVisible" width="50%">
         <div v-html="currentContent"></div>
-        <img :src="`${baseUrl}${dialogImage}`" alt="图片" style="max-width: 100%; margin-top: 20px;" v-if="dialogImage" />
+        <img :src="`${dialogImage}`" alt="图片" style="max-width: 100%; margin-top: 20px;" v-if="dialogImage" />
         <template #footer>
           <el-button @click="isContentDialogVisible = false">关闭</el-button>
         </template>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { listUmsFarmhouse, getUmsFarmhouse, delUmsFarmhouse, addUmsFarmhouse, updateUmsFarmhouse, exportUmsFarmhouse } from "@/api/mall/farmhouse";
+import { listUmsFarmhouse, getUmsFarmhouse, delUmsFarmhouse, addUmsFarmhouse, updateUmsFarmhouse, exportUmsFarmhouse, getUmsInformationByPage } from "@/api/mall/farmhouse";
 export default {
   components: {
 
@@ -113,7 +113,7 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_API,
       isContentDialogVisible: false, // 新的对话框可见性变量
       currentContent: '', // 新的内容变量
-      dialogImage : '',
+      dialogImage: '',
       queryParams: {
         keyword: '',
         pageNum: 1,
@@ -136,6 +136,10 @@ export default {
     };
   },
   methods: {
+    async getUmsInformationByPage() {
+      const res = await getUmsInformationByPage(this.queryParams)
+      this.dataList = res
+    },
     showContentDialog(row) {
       this.currentContent = row.content; // 假设内容在 row.content 中
       this.dialogImage = row.pic;

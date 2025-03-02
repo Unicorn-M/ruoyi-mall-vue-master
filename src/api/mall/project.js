@@ -18,6 +18,15 @@ export function getUmsProject(id) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsProject/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增扶贫项目申请增删改查
 export function addUmsProject(data) {
   return request({

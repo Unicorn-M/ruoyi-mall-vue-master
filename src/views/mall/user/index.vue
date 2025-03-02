@@ -3,8 +3,8 @@
         <el-card>
             <!-- 搜索区域 -->
             <div class="search-bar">
-                <el-input v-model="queryParams.keyword" placeholder="请输入关键字查询" clearable style="width: 300px;" />
-                <el-button type="primary" @click="handleQuery">查询</el-button>
+                <el-input v-model="queryParams.keyword" placeholder="请输入用户名查询" clearable style="width: 300px;" />
+                <el-button type="primary" @click="getUmsInformationByPage">查询</el-button>
                 <el-button @click="resetQuery">重置</el-button>
             </div>
 
@@ -22,7 +22,7 @@
                 <el-table-column prop="id" label="序号" width="80" />
                 <el-table-column label="头像" width="100">
                     <template #default="scope">
-                        <img :src="`${baseUrl}${scope.row.pic}`" alt="头像" style="width: 50px; height: 50px;" />
+                        <img :src="`${scope.row.pic}`" alt="头像" style="width: 50px; height: 50px;" />
                     </template>
                 </el-table-column>
                 <el-table-column prop="username" label="用户名" />
@@ -55,7 +55,7 @@
             <!-- 查看内容对话框 -->
             <el-dialog title="查看内容" :visible.sync="isContentDialogVisible" width="50%">
                 <div v-html="currentContent"></div>
-                <img :src="`${baseUrl}${dialogImage}`" alt="头像" style="max-width: 100%; margin-top: 20px;"
+                <img :src="`${dialogImage}`" alt="头像" style="max-width: 100%; margin-top: 20px;"
                     v-if="dialogImage" />
                 <template #footer>
                     <el-button @click="isContentDialogVisible = false">关闭</el-button>
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { listUmsUser, getUmsUser, delUmsUser, addUmsUser, updateUmsUser, exportUmsUser } from "@/api/mall/user";
+import { getUmsInformationByPage, listUmsUser, getUmsUser, delUmsUser, addUmsUser, updateUmsUser, exportUmsUser } from "@/api/mall/user";
 export default {
     components: {
 
@@ -172,6 +172,10 @@ export default {
         };
     },
     methods: {
+        async getUmsInformationByPage() {
+            const res = await getUmsInformationByPage(this.queryParams)
+            this.dataList = res
+        },
         // 映射身份字段
         formatIdentity(isPoor) {
             const identityMap = {

@@ -3,10 +3,10 @@
     <!-- 搜索表单 -->
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="订单编号" prop="orderId">
-        <el-input v-model="queryParams.orderId" placeholder="请输入订单编号" clearable />
+        <el-input v-model="queryParams.keyword" placeholder="请输入订单编号" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="getUmsInformationByPage">查询</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { listUmsOrder, updateUmsOrder } from "@/api/mall/umsOrder";
+import {getUmsInformationByPage, listUmsOrder, updateUmsOrder } from "@/api/mall/umsOrder";
 
 export default {
   name: 'OrderManagement',
@@ -58,6 +58,10 @@ export default {
     };
   },
   methods: {
+    async getUmsInformationByPage() {
+      const res = await getUmsInformationByPage(this.queryParams)
+      this.orderList = res
+    },
     getList() {
       this.loading = true;
       const { pageNum, pageSize } = this.queryParams;

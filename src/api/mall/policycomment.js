@@ -18,6 +18,15 @@ export function getUmsPolicycomment(id) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsPolicycomment/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增扶贫政策评论增删改查
 export function addUmsPolicycomment(data) {
   return request({

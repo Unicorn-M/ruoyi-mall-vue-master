@@ -18,6 +18,15 @@ export function getUmsUser(id) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsUser/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增农家信息增删改查
 export function addUmsUser(data) {
   return request({

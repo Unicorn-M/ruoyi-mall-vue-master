@@ -3,8 +3,8 @@
     <el-card>
       <!-- 搜索区域 -->
       <div class="search-bar">
-        <el-input v-model="queryParams.keyword" placeholder="请输入关键字查询" clearable style="width: 300px;" />
-        <el-button type="primary" @click="handleQuery">查询</el-button>
+        <el-input v-model="queryParams.keyword" placeholder="请输入商品名称" clearable style="width: 300px;" />
+        <el-button type="primary" @click="getUmsInformationByPage">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
       </div>
 
@@ -22,7 +22,7 @@
         <el-table-column prop="id" label="序号" width="80" />
         <el-table-column label="图片" width="100">
           <template #default="scope">
-            <img :src="`${baseUrl}${scope.row.pic}`" alt="图片" style="width: 50px; height: 50px;" />
+            <img :src="`${scope.row.pic}`" alt="图片" style="width: 50px; height: 50px;" />
           </template>
         </el-table-column>
         <el-table-column prop="name" label="商品名称" />
@@ -47,7 +47,7 @@
       <!-- 查看内容对话框 -->
       <el-dialog title="查看内容" :visible.sync="isContentDialogVisible" width="50%">
         <div v-html="currentContent"></div>
-        <img :src="`${baseUrl}${dialogImage}`" alt="图片" style="max-width: 100%; margin-top: 20px;" v-if="dialogImage" />
+        <img :src="`${dialogImage}`" alt="图片" style="max-width: 100%; margin-top: 20px;" v-if="dialogImage" />
         <template #footer>
           <el-button @click="isContentDialogVisible = false">关闭</el-button>
         </template>
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { listGoods, getGoods, delGoods, addGoods, updateGoods, exportGoods } from "@/api/mall/goods";
+import {getUmsInformationByPage, listGoods, getGoods, delGoods, addGoods, updateGoods, exportGoods } from "@/api/mall/goods";
 export default {
   components: {
 
@@ -136,6 +136,10 @@ export default {
     };
   },
   methods: {
+    async getUmsInformationByPage() {
+      const res = await getUmsInformationByPage(this.queryParams)
+      this.dataList = res
+    },
     showContentDialog(row) {
       this.currentContent = row.content; // 假设内容在 row.content 中
       this.dialogImage = row.pic;
@@ -186,7 +190,9 @@ export default {
       // 如果验证通过，继续进行提交的逻辑
       console.log('表单数据:', this.form);
       // 发送到后端的逻辑
+      addGoods(this.form)
       this.dialogVisible = false; // 关闭对话框
+      fetchData()
     },
     handleImageChange(images) {
       if (images.length > 0) {

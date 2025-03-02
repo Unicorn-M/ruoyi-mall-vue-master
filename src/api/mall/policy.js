@@ -10,6 +10,15 @@ export function listUmsPolicy(query, pageReq) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsPolicy/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询扶贫信息增删改查详细
 export function getUmsPolicy(id) {
   return request({

@@ -18,6 +18,15 @@ export function getUmsFarmhouse(id) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsFarmhouse/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增农家乐增删改查
 export function addUmsFarmhouse(data) {
   return request({

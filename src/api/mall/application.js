@@ -10,6 +10,15 @@ export function listUmsApplication(query, pageReq) {
   })
 }
 
+// 分页查询资讯信息
+export function getUmsInformationByPage(query) {
+  return request({
+    url: '/ruoyi-mall/umsApplication/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询贫困身份申请详细
 export function getUmsApplication(id) {
   return request({

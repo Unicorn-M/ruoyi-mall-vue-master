@@ -3,14 +3,14 @@
     <!-- 筛选区域 -->
     <el-row :gutter="20" class="filter-row">
       <el-col :span="6">
-        <el-select v-model="filters.status" placeholder="请选择状态" clearable>
+        <el-select v-model="queryParams.keyword" placeholder="请选择状态" clearable>
           <el-option label="待审核" value="待审核"></el-option>
           <el-option label="审核通过" value="审核通过"></el-option>
           <el-option label="审核拒绝" value="审核拒绝"></el-option>
         </el-select>
       </el-col>
       <el-col :span="6">
-        <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button type="primary" @click="getUmsInformationByPage">查询</el-button>
         <el-button @click="resetFilters">重置</el-button>
       </el-col>
     </el-row>
@@ -67,6 +67,7 @@
 
 <script>
 import {
+  getUmsInformationByPage,
   listUmsApplication,
   getUmsApplication,
   delUmsApplication,
@@ -84,6 +85,7 @@ export default {
       queryParams: {
         pageNum: 1, // 当前页码
         pageSize: 10, // 每页条数
+        keyword:''
       },
       dataList: [], // 表格数据
       total: 0, // 总条数
@@ -101,6 +103,10 @@ export default {
     };
   },
   methods: {
+    async getUmsInformationByPage() {
+      const res = await getUmsInformationByPage(this.queryParams)
+      this.dataList = res
+    },
     formatStatus(row) {
       const statusMap = {
         0: "待审核",
